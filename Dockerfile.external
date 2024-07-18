@@ -14,7 +14,9 @@ FROM base as dependencies
 WORKDIR /home/worker/app
 COPY pyproject.toml poetry.lock ./
 
-RUN poetry install --extras "ui vector-stores-qdrant llms-ollama embeddings-ollama"
+#RUN poetry install --extras "ui vector-stores-qdrant llms-ollama embeddings-ollama"
+RUN poetry install --extras "ui llms-ollama embeddings-ollama embeddings-huggingface llms-openai-like vector-stores-qdrant"
+
 
 FROM base as app
 
@@ -28,11 +30,12 @@ WORKDIR /home/worker/app
 
 RUN mkdir local_data; chown worker local_data
 RUN mkdir models; chown worker models
-COPY --chown=worker --from=dependencies /home/worker/app/.venv/ .venv
-COPY --chown=worker private_gpt/ private_gpt
-COPY --chown=worker fern/ fern
-COPY --chown=worker *.yaml *.md ./
-COPY --chown=worker scripts/ scripts
+COPY --from=dependencies /home/worker/app/.venv/ .venv
+COPY private_gpt/ private_gpt
+COPY fern/ fern
+COPY *.yaml *.md ./
+COPY scripts/ scripts
+RUN chown -R worker /home/worker/app
 
 ENV PYTHONPATH="$PYTHONPATH:/private_gpt/"
 
