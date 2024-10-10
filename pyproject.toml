@@ -54,7 +54,7 @@ torch = {version ="^2.3.1", optional = true}
 sentence-transformers = {version ="^3.0.1", optional = true}
 
 # Optional UI
-gradio = {version ="^4.37.2", optional = true}
+gradio = {version ="^5.0.0", optional = true}
 
 # Optional Google Gemini dependency
 google-generativeai = {version ="^0.5.4", optional = true}
